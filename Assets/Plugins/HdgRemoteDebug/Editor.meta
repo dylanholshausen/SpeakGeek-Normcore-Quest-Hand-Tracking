@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7f8804301f4f52c40ba2470eae26e83b
+labels:
+- GameObject
+- Inspector
+- Tablet
+- Mobile
+- Device
+- Remote
+- Debug
+folderAsset: yes
+timeCreated: 1462975454
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

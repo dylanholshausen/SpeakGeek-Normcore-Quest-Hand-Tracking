@@ -1,0 +1,195 @@
+2.4.3599
+========
+
+Fixes
+-----
+
+* Skip fields that are Unity Component references. This fixes the stack overflow that can occur when a reference points to itself.
+* Fixed a bug where if a list was empty setting its size would not show the elements of the list because they were all null.
+* Fixed a bug where lists of custom structs or classes couldn't be updated.
+* Don't serialise classes in lists or arrays if they don't have the Serializable attribute.
+
+New features
+------------
+
+* Server port and broadcast port can now be overridden on the Hdg Remote Debug factory.
+
+Fixes
+-----
+
+* Improved tree rendering performance significantly when there are thousands of nodes.
+* Fixed bug where server broadcast client sometimes doesn't clean up its UdpClient instance.
+* Fixed rare bug where multiple servers could exist.
+
+2.3.3529
+========
+
+Fixes
+-----
+
+* Fixed link.xml not ignoring missing files (should fix build time errors like "UnusedBytecodeStripper2.exe did not run properly!").
+* Fixed bug where clicking a scene node in the tree would always select the first thing in the tree.
+
+2.3.3511
+========
+
+New features
+------------
+
+* Pressing the delete key will now delete the selected nodes.
+
+Fixes
+-----
+
+* The fields of a reference are now serialised and can be modified (however, the reference itself cannot be changed).
+* Added a default link.xml to ensure Hdg Remote Debug is not stripped by default.
+
+2.2.3499
+========
+
+New features
+------------
+
+* GameObjects will now appear under a node representing the scene that they are in.
+* If a Graphic component is modified, it will now be flagged as dirty, which will force it to refresh itself.
+
+Fixes
+-----
+
+* Fixed build helper writing out the wrong assembly name.
+* Fixed performance issue when refreshing the tree when there are many GameObjects.
+
+2.1.3460
+========
+
+New features
+------------
+
+* Added multi-selection of GameObjects in the hierarchy using control and shift. Multi-selected GameObjects can be turned on/off together.
+* Added search filter for hierarchy.
+* Automatic refresh setting is persisted in EditorPrefs.
+* Added BuildHelpers to make enabling/disabling stripping and enabling/disabling Remote Debug plugin DLLs easier in build pipelines.
+
+Fixes
+-----
+
+* Only log the "address already in use" message for the server enumerator once.
+* Fixed bug where server address popup window was indistinguishable from the remote debug background when using the personal skin.
+* Set script execution order for RemoteDebugServerFactory so it runs as early as possible.
+* Don't refresh components if there is no selected GameObject (fixes 'ArgumentOutOfRangeException').
+* Search through all loaded assemblies for Hdg.RemoteDebugServer type by string name instead of concrete type in case the DLL was never loaded and to avoid pulling in the DLL.
+* Only refresh components when 'refresh' is pressed, if 'automatic refresh' is enabled, if the selection changes, or if a property is changed.
+
+2.0.3382
+========
+
+Fixes
+-----
+
+* Use string names for types instead of the Type object, in case they have been stripped out of a build.
+* Fixed bug where when an app is backgrounded, the server would sometimes throw a NullReferenceException.
+* Breaking change: Renamed RemoveDontDestroyOnLoadObjects -> RemoveDontDestroyOnLoadObject (singular).
+* If server is destroying itself, also remove itself from the don't destroy on load list.
+* When a SocketException occurs in the server Update(), just stop and start listening again (fixes bug where locking iPhone and then opening up again would never restart the server).
+* Factory script no longer creates the server if it already exists, and destroys itself (fixes bug where loading back into a scene with the server would cause a server to be created and immediately destroyed).
+* Fixed bug where if a gob is in the current scene and marked as DontDestroyOnLoad it would appear twice.
+* Recursively search children of DontDestroyOnLoad objects.
+* Guard against null GameObjects in the DontDestroyOnLoadObjects list, and only log a warning message the first time one is found.
+* Disabled some debug spam.
+
+2.0.3354
+========
+
+New features
+------------
+
+* DontDestroyOnLoad objects can be manually added and removed to the server for tracking.
+* Finally out of beta!
+
+Fixes
+-----
+
+* Fixed bug where EditorPrefs would be queried from constructor (which Unity doesn't like) rather than OnEnable.
+
+2.0.3342 Beta
+=============
+
+New features
+------------
+
+* The five most recently added custom servers now persist via EditorPrefs.
+
+2.0.3331 Beta
+=============
+
+Fixes
+-----
+
+* Check if scene is valid when getting root objects.
+* Disabled showing of DontDestroyOnLoad objects because there isn't a reliable way to get this information at runtime.
+
+2.0.3321 Beta
+=============
+
+New features
+------------
+
+* Added a button to turn off automatic refreshing of the hierarchy. The user must manually press the "refresh" button to get an updated list.
+
+Fixes
+-----
+
+* Refresh GameObject list message is no longer sent if there is already one outstanding, so we don't queue up thousands.
+* If a 'get components' message was received by the server and the GameObject can't be found, "GameObject not found" will be displayed in the component panel.
+* Messages are serialised from the write thread to avoid blocking the main thread even more.
+* The inner exception is now logged when using the Hdg.Button attribute, rather than the generic "invoke failed" exception.
+
+2.0.3287 Beta
+=============
+
+Fixes
+-----
+
+* Fixed bug where only GameObjects from the first active scene would appear, rather than all active scenes.
+* Fixed bug where DontDestroyOnLoad objects would not be shown.
+
+2.0.3266 Beta
+=============
+
+New features
+------------
+
+* Added support for Unity 4.6.8 - 5.3.1.
+
+2.0.3251 Beta
+=============
+
+New features
+------------
+
+* Added support for UWP.
+* Added support for connecting to a custom IP address.
+* Added support for serialising arrays of structs.
+
+Fixes
+-----
+
+* Server prefab now dynamically creates the real server instance because we can't keep a reference to the MonoBehaviour, since we don't know what DLL will be loaded (e.g. UWP or non-UWP).
+* Big refactor of serialisation so it will work with UWP.
+* Use the reload scripts attribute to detect reload instead of hacky method.
+* In OnDisable, do a disconnect (seems to fix reload blocking).
+* If selected object has been removed then clear the selection.
+* Fixed bug where if a list or array was null the property wouldn't show up at all.
+* Fixed bug with foldouts in arrays where expanding e.g. a vec4 in one element would expand all of them.
+* Fixed bug where arrays nested in structs wouldn't have their sizes updated.
+* Send a set array size message to the server when array/list sizes are changed.
+* Fixed lists rendering the size property for lists of rdt.property (it shouldn't be).
+* Fixed bug where setting a larger size on an array or list  would fail to add new items, and setting a smaller size would only remove one item instead of the difference.
+* Fixed lists not rendering in inspector.
+* Fixed List<> not being serialised.
+* Fixed bug where updating would reconstruct the hierarchy in the reverse order, causing fields on user structs to not be updated on the server.
+
+1.0.3050 Beta
+=============
+
+* Initial public release.

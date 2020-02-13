@@ -1,0 +1,10 @@
+<linker>
+    <assembly fullname="HdgRemoteDebugRuntime" preserve="all" ignoreIfMissing="1" />
+    <assembly fullname="System">
+    	<namespace fullname="System.ComponentModel" preserve="all" />
+    	<namespace fullname="System.Net.Configuration" preserve="all" />
+    </assembly>
+    <assembly fullname="System.Configuration">
+    	<namespace fullname="System.Configuration" preserve="all" />
+    </assembly>
+</linker>

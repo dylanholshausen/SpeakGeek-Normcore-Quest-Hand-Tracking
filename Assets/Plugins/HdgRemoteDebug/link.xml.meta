@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0d0129b910ca63f47b04ac4ec792ec33
+labels:
+- Debug
+- Device
+- GameObject
+- Inspector
+- Mobile
+- Tablet
+- Remote
+timeCreated: 1497444077
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

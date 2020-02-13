@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 5b687dd3d01fb554c8c80dffa237d611
+labels:
+- Debug
+- Remote
+- Device
+- Mobile
+- Tablet
+- Inspector
+- GameObject
+timeCreated: 1487726954
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,32 @@
+fileFormatVersion: 2
+guid: 58469d5478fd6bf4ca0ba7604afa6b7e
+labels:
+- GameObject
+- Inspector
+- Tablet
+- Mobile
+- Device
+- Remote
+- Debug
+timeCreated: 1462975476
+licenseType: Store
+PluginImporter:
+  serializedVersion: 1
+  iconMap: {}
+  executionOrder: {}
+  isPreloaded: 0
+  platformData:
+    Any:
+      enabled: 0
+      settings: {}
+    Editor:
+      enabled: 1
+      settings:
+        DefaultValueInitialized: true
+    WindowsStoreApps:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
