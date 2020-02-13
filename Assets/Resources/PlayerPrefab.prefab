@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52948447fca9bd045b0e5865b1282811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightHand: 1
+  isRightHand: 1
   _updateRootPose: 0
   _updateRootScale: 1
   _myOVRSkeleton: {fileID: 2214434035403461237}
@@ -857,7 +857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4456edc71a7aff846b08afe773003294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _SGHand: {fileID: 741924028001285609}
+  sgHand: {fileID: 741924028001285609}
 --- !u!1 &2079462958569394502
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,7 +950,7 @@ MonoBehaviour:
   _skeletonType: 1
   _updateRootPose: 0
   _updateRootScale: 1
-  _enablePhysicsCapsules: 1
+  _enablePhysicsCapsules: 0
 --- !u!1 &2245857069687516438
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,7 +1012,7 @@ MonoBehaviour:
   _skeletonType: 0
   _updateRootPose: 0
   _updateRootScale: 1
-  _enablePhysicsCapsules: 1
+  _enablePhysicsCapsules: 0
 --- !u!1 &2245973857377806646
 GameObject:
   m_ObjectHideFlags: 0
@@ -2497,7 +2497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52948447fca9bd045b0e5865b1282811, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RightHand: 0
+  isRightHand: 0
   _updateRootPose: 0
   _updateRootScale: 1
   _myOVRSkeleton: {fileID: 2214434035485856860}
@@ -2542,7 +2542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4456edc71a7aff846b08afe773003294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _SGHand: {fileID: 1475229750561987884}
+  sgHand: {fileID: 1475229750561987884}
 --- !u!1 &3892027083183616481
 GameObject:
   m_ObjectHideFlags: 0

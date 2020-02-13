@@ -1,16 +1,20 @@
-﻿using System;
+﻿/************************************************************************************
+Copyright : Copyright 2019 (c) Speak Geek (PTY), LTD and its affiliates. All rights reserved.
+
+Developer : Matthew Morris
+
+Script Description : 
+
+************************************************************************************/
+
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
 using UnityEngine;
+
 using static OVRSkeleton;
 
 public class SpeakGeekOculusQuestHand : MonoBehaviour
 {
-    public bool RightHand = false;
-    
     [Header("These two fields need to match the OVRSkelton fields")]
     [SerializeField]
     private bool _updateRootPose = false;
@@ -28,15 +32,15 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
 
     //References to Oculus Objects
     public OVRSkeleton _myOVRSkeleton;
-
-    //private SkinnedMeshRenderer _ovrSkinMeshRenderer;
     private IOVRSkeletonDataProvider _dataProvider;
 
+    //References to scripts managing networking of hands
     private handPoseModelSync _SGHandSync;
     public Normal.Realtime.RealtimeView rtView;
 
     public bool handReady = false;
 
+    //Ensures the transform is uniform
     private void Awake()
     {
         transform.eulerAngles = Vector3.zero;
@@ -44,6 +48,8 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
         transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
+    //Recreate hand structure to replicate Oculus
+    //This orders all the bones within the list, setting the finger tips last.
     public void readyHand()
     {
         _SGHandSync = GetComponent<handPoseModelSync>();
@@ -66,7 +72,7 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
                 {
                     if (bone.name.Contains("Tip"))
                     {
-                        fingerTips.Add(bone);
+                        fingerTips.Add(bone); //Keep reference to finger tips
                     }
                     else
                     {
@@ -81,20 +87,29 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
             }
         }
 
-        InitializeHand();
+        //Initialize the skinnedMeshRender and assign the bones.
+        _mySkinMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        _mySkinMeshRenderer.enabled = true;
+        _mySkinMeshRenderer.bones = _bones.ToArray();
 
-        //IOVRSkeletonDataProvider holds the hand rotation data. So we get reference to the same DataProvider as the oculus hand we are copying.
+        //Hands are now ready
+        handReady = true;
+
+        //IOVRSkeletonDataProvider holds the hand rotation data. So we get reference to the same DataProvider as the oculus hand we are mimicing.
         if (_dataProvider == null && _myOVRSkeleton != null)
         {
             _dataProvider = _myOVRSkeleton?.GetComponent<IOVRSkeletonDataProvider>();
         }
     }
 
+    //Everything within Update has to do with the local hand.
     private void Update()
     {
+        //Only update if the hand is ready
         if (!handReady)
             return;
 
+        //Check network ownership
         if (rtView != null)
         {
             if (!rtView.isOwnedLocally)
@@ -112,14 +127,17 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
         else
         {
             var data = _dataProvider.GetSkeletonPoseData();
+            //dataToSend is a string of all the relevant data controlling the movement of the hand, which needs to be sent over the network.
             string dataToSend = "";
 
+            //We check oculus data confidence
             if (data.IsDataValid && data.IsDataHighConfidence)
             {
                 _mySkinMeshRenderer.enabled = true;
 
                 dataToSend += "1|";
 
+                //Replicates oculus root pose handling, should match oculus OVRSkeleton
                 if (_updateRootPose)
                 {
                     transform.localPosition = data.RootPose.Position.FromFlippedZVector3f();
@@ -136,6 +154,7 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
                     dataToSend += "0|0|0|";
                 }
 
+                //Replicates oculus root scale handling, should match oculus OVRSkeleton
                 if (_updateRootScale)
                 {
                     transform.localScale = new Vector3(data.RootScale, data.RootScale, data.RootScale);
@@ -149,6 +168,7 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
                     dataToSend += "0|0|0|";
                 }
 
+                //Set bone transform from SkeletonPoseData
                 for (var i = 0; i < _bones.Count; ++i)
                 {
                     _bones[i].transform.localRotation = data.BoneRotations[i].FromFlippedZQuatf();
@@ -158,11 +178,14 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
             }
             else
             {
+
+                //If data confidence is low, hide hand
                 _mySkinMeshRenderer.enabled = false;
 
                 dataToSend = "0|";
             }
 
+            //Don't send TrackedData if we are the editor.
             if (!Application.isEditor)
             {
                 if (rtView != null)
@@ -176,6 +199,7 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
         }
     }
 
+    //Everything within Update has to do with the remote hand.
     public void updateFromNormCore(string netHandData)
     {
         if (!handReady)
@@ -225,15 +249,7 @@ public class SpeakGeekOculusQuestHand : MonoBehaviour
         }
     }
 
-    private void InitializeHand()
-    {
-        _mySkinMeshRenderer = GetComponent<SkinnedMeshRenderer>();
-        _mySkinMeshRenderer.enabled = true;
-        _mySkinMeshRenderer.bones = _bones.ToArray();
-
-        handReady = true;
-    }
-
+    //Helper function to tranverse children and get reference to their transforms.
     private void GetChildRecursive(Transform obj)
     {
         if (null == obj)

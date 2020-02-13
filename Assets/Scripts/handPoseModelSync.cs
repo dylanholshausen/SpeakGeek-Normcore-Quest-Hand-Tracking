@@ -1,20 +1,26 @@
-﻿using Normal.Realtime;
-using System;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
-using UnityEngine;
+﻿/************************************************************************************
+Copyright : Copyright 2019 (c) Speak Geek (PTY), LTD and its affiliates. All rights reserved.
+
+Developer : Dylan Holshausen
+
+Script Description : Sync Hand Pose Model Data Through Normcore
+
+************************************************************************************/
+
+using Normal.Realtime;
 
 public class handPoseModelSync : RealtimeComponent
 {
-    //private OculusSampleFramework.HandSkeleton _handSkeleton;
+    //Private Variables
     private handPoseModel _model;
 
-    public SpeakGeekOculusQuestHand _SGHand;
+    //Public Variables
+    public SpeakGeekOculusQuestHand sgHand;
     
     private void Start()
     {
-        _SGHand = GetComponent<SpeakGeekOculusQuestHand>();
+        //Reference Our Oculus Hand Script That Gets/Applies Bone Data to the Hands
+        sgHand = GetComponent<SpeakGeekOculusQuestHand>();
     }
 
     private handPoseModel model
@@ -53,7 +59,8 @@ public class handPoseModelSync : RealtimeComponent
         if (_model.skeletonTrackedData == "")
             return;
 
-        _SGHand.updateFromNormCore(_model.skeletonTrackedData);
+        //Send Received Hand/Bone Data to Update Function in SG Quest Hand Script
+        sgHand.updateFromNormCore(_model.skeletonTrackedData);
     }
 
     public void SetTrackedData(string trackedData)

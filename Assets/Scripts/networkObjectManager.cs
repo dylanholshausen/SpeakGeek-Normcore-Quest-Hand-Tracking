@@ -1,5 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿/************************************************************************************
+Copyright : Copyright 2019 (c) Speak Geek (PTY), LTD and its affiliates. All rights reserved.
+
+Developer : Dylan Holshausen
+
+Script Description : Enable/Disable Objects Based on Remote/Local Player
+
+************************************************************************************/
+
 using UnityEngine;
 using Normal.Realtime;
 
@@ -29,6 +36,8 @@ public class networkObjectManager : MonoBehaviour
 
         transform.name = rtView.ownerID.ToString();
 
+        //SEARCH FOR GAMEOBJECTS WITH THE TAG 'SPAWN' AND SET TRANSFORM THE SAME
+        //BASED ON OWNER ID
         foreach(GameObject myGO in GameObject.FindGameObjectsWithTag("spawn"))
         {
             if (myGO.name == transform.name)
